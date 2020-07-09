@@ -41,6 +41,7 @@ namespace SP_ASPNET_1.Controllers
             {
                 modelView = this._blogPostOperations.GetBlogPostByIdFull((int)id);
             }
+            ViewData ["AvgLike"] = this._blogPostOperations.GetAuthorAvgLike(((int)id));
 
             return View(modelView);
         }
@@ -81,6 +82,7 @@ namespace SP_ASPNET_1.Controllers
             }
         }
 
+
         [Route("Edit/{id:int?}")]
         [HttpGet]
         public ActionResult EditBlogPost(int id)
@@ -92,6 +94,7 @@ namespace SP_ASPNET_1.Controllers
             return View(blogPost);
         }
 
+
         [Route("Edit/{id:int}")]
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
@@ -100,7 +103,12 @@ namespace SP_ASPNET_1.Controllers
             {
                 // TODO: Add update logic here
                 // TODO: Return to detail
-                throw new NotImplementedException("Editing blog post is not implemented");
+                BlogPost blogpost;
+
+                blogpost = this._blogPostOperations.GetBlogPostByIdD((int)id);
+                return View(blogpost);
+
+              //  throw new NotImplementedException("Editing blog post is not implemented");
             }
             catch
             {
@@ -108,6 +116,46 @@ namespace SP_ASPNET_1.Controllers
             }
         }
 
+        [Route("EditBlog")]
+        [HttpPost]
+        public ActionResult EditBlog(BlogPost editedBlogPost)
+        {
+            try
+            {
+                // TODO: Add update logic here
+                // TODO: Return to detail
+                BlogPost blogpost;
+
+                blogpost = this._blogPostOperations.GetBlogPostByIdD((int)editedBlogPost.BlogPostID);
+                if (blogpost != null)
+                {
+                    blogpost.Title = editedBlogPost.Title;
+                    blogpost.DateTime = editedBlogPost.DateTime;
+                    blogpost.Content = editedBlogPost.Content;
+                    blogpost.ImageUrl = editedBlogPost.ImageUrl;
+                    blogpost.LikeQty = editedBlogPost.LikeQty;
+
+                    this._blogPostOperations.Update(blogpost);
+
+                    return Json(new { success = true, responseText = "Blog Sucessfully edited!" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, responseText = "Blog update failed!" }, JsonRequestBehavior.AllowGet);
+                }
+
+               //return View(blogpost);
+
+
+              //throw new NotImplementedException("Editing blog post is not implemented");
+            }
+            catch
+            {
+                return Json(new { success = false, responseText = "Blog update failed!" }, JsonRequestBehavior.AllowGet);
+                //   return View();
+            }
+        }
+      
         [Route("Delete/{id:int}")]
         [HttpGet]
         public ActionResult Delete(int id)

@@ -10,5 +10,6 @@ namespace SP_ASPNET_1.ViewModels
     {
         public Author Author { get; set; }
         public BlogPost BlogPost { get; set; }
+       
     }
 }

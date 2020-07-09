@@ -3,33 +3,56 @@
 
 
 @{ Layout = "~/Views/Shared/Blog/_BlogLayout.cshtml"; }
+<head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
 
 @if (Model.BlogPosts != null)
 {
 <ul class="Posts__Featured">
     @foreach (BlogPost post in Model.BlogPosts)
     {
-    <li class="Posts__Item">
-        <img src="@Html.AttributeEncode(Constants.POST_IMAGE_PREFIX + post.ImageUrl)" alt="post image preview" class="Post__Image">
-        <div class="Post-Preview__Content">
-            <h2>@post.Title</h2>
-            <p>By @post.Author on @post.DateTime.ToString(Constants.DISPLAY_DATETIME_FORMAT)</p>
-            <br>
-            <p>@post.Content.Substring(0, 200)...</p>
-        </div>
-    </li>
-    <li class="Posts__Item__Link">
-        <button onClick="location.href='@Url.Action("SinglePost", new { id = @post.BlogPostID})'" class="c-btn">read more</button>
-        <hr class="Post__Hr" />
-    </li>
-    }
+<li class="Posts__Item">
+    <img src="@Html.AttributeEncode(Constants.POST_IMAGE_PREFIX + post.ImageUrl)" alt="post image preview" class="Post__Image">
+    <div class="Post-Preview__Content">
+        <h2>@post.Title</h2>
+        <p>By @post.Author on @post.DateTime.ToString(Constants.DISPLAY_DATETIME_FORMAT)</p>
+        <p> <input type="button" id="btnLike" value="Like" class="btn btn-default" />  @Model.BlogPost.LikeQty</p>
+        <br>
+        <p>@post.Content.Substring(0, 200)...</p>
+    </div>
+</li>
+                    <li class="Posts__Item__Link">
+                        <button onClick="location.href='@Url.Action("SinglePost", new { id = @post.BlogPostID})'" class="c-btn">read more</button>
+                        <hr class="Post__Hr" />
+                    </li>}
     <li>
         <button class="c-btn">load more</button>
     </li>
 
-</ul>
-}
-else
-{
-<h1>There are no blog posts :-(</h1>
-}
+</ul> }
+            else
+            {
+<h1>There are no blog posts :-(</h1>}
+
+<script type="text/javascript">
+    var liked = false;
+
+    $(document).ready(function () {
+        alert("hi");
+    });
+
+    $("btnLike").click(function (e) {
+        alert("clicked");
+        if (liked == false) {
+            liked = true;
+            alert("Liked");
+
+        } else {
+            liked == false;
+            alert("Dislike");
+        }
+
+
+    }
+</script>

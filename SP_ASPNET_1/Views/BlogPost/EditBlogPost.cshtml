@@ -3,13 +3,15 @@
 @{
     ViewBag.Title = "EditBlogPost";
 }
-
+    <head>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    </head>
 <h2>EditBlogPost</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "editForm" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>BlogPost</h4>
         <hr />
@@ -50,7 +52,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <!-- <input type="submit" value="Save" class="btn btn-default" />-->
+                <input type="button" id="btnSave" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -59,3 +62,34 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section scripts{
+    <script type="text/javascript">
+        var liked = false;
+        $("#btnSave").click(function (e) {
+
+            var formData = $("#editForm").serialize();
+           
+            $.ajax({
+                url: "/Blog/EditBlog",
+                type: "POST",
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.responseText);
+                    } else {
+                      alert(response.responseText);
+                    }
+                },
+                error: function (response) {
+                    alert("error!");  
+                }
+
+            });
+        });
+
+      </script>
+
+}

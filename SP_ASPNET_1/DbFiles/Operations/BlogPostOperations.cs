@@ -40,6 +40,37 @@ namespace SP_ASPNET_1.DbFiles.Operations
             };
         }
 
+        public int GetAuthorAvgLike(int id)
+        {
+            //testing likes
+            BlogSinglePostViewModel blogPostVm = _unitOfWork.BlogPostSchoolRepository.Get(filter: x => x.BlogPostID == id,
+                    orderBy: null,
+                    includeProperties: "Author")
+                .FirstOrDefault()
+                .ToBlogSinglePostViewModel();
+            int blogPostAuthId = blogPostVm.Author.AuthorID;
+
+            List<int> blogPostsLikes = _unitOfWork.BlogPostSchoolRepository
+                .Get(b => b.Author.AuthorID == blogPostAuthId, b => b.OrderByDescending(d => d.DateTime), "Author")
+                .Select(b =>  b.LikeQty).ToList();
+            
+            if (blogPostsLikes.Any() )
+            {
+                int noOfBlogs = blogPostsLikes.Count();
+                int totalLikes = blogPostsLikes.Sum();
+                if (blogPostsLikes.Sum() > 0)
+                {
+
+                    int avgLikes = Convert.ToInt32(totalLikes / noOfBlogs);
+                    if (avgLikes > 0) { return avgLikes; }
+                    else { return 1; }
+                }                
+                else { return 0; }
+             }
+            return 0;           
+           
+        }
+        
         public BlogPost GetBlogPostByIdD(int id)
         {
             return _unitOfWork.BlogPostSchoolRepository.GetByID(id);
@@ -47,6 +78,7 @@ namespace SP_ASPNET_1.DbFiles.Operations
 
         public BlogSinglePostViewModel GetBlogPostByIdFull(int id)
         {
+           
             return _unitOfWork.BlogPostSchoolRepository.Get(filter: x => x.BlogPostID == id,
                     orderBy: null,
                     includeProperties: "Author")
@@ -54,6 +86,9 @@ namespace SP_ASPNET_1.DbFiles.Operations
                 .ToBlogSinglePostViewModel();
         }
 
+
+        
+        
         public BlogSinglePostViewModel GetLatestBlogPost()
         {
             return _unitOfWork.BlogPostSchoolRepository.Get(filter: null,
@@ -72,13 +107,13 @@ namespace SP_ASPNET_1.DbFiles.Operations
                     "Author")
                 .ToList();
 
-            if(posts.Count is 0)
+            if (posts.Count is 0)
             {
                 return null;
             }
 
             Random rnd = new Random();
-            
+
             var randomPost = posts[rnd.Next(posts.Count)];
             return randomPost.ToBlogSinglePostViewModel();
         }
@@ -97,6 +132,21 @@ namespace SP_ASPNET_1.DbFiles.Operations
             }
         }
 
+        public void Update(BlogPost blogPost)
+        {
+            try
+            {
+                this._unitOfWork.BlogPostSchoolRepository.Update(blogPost);
+                this._unitOfWork.Save();
+            }
+            catch (Exception e)
+            {
+                throw;
+
+            }
+        }
+
+
         public void Delete(int id)
         {
             try
@@ -110,7 +160,7 @@ namespace SP_ASPNET_1.DbFiles.Operations
                 Console.WriteLine(e);
                 throw;
             }
-            
+
         }
     }
 }

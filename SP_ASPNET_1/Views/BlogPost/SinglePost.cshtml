@@ -6,25 +6,53 @@
     }*@
 @{ Layout = "~/Views/Shared/Blog/_BlogLayout.cshtml"; }
 
+@{ var AuthAvgLike = (int)ViewData["AvgLike"]; }
+
 @if (Model != null)
 {
 <div class="SinglePost">
     <img src="@Html.AttributeEncode(Constants.POST_IMAGE_PREFIX + Model.BlogPost.ImageUrl)" alt="@Path.GetFileNameWithoutExtension(Model.BlogPost.ImageUrl)" />
     <h2>new chills for summer</h2>
-    <p>By @Model.Author.ToString() on @Model.BlogPost.DateTime.ToString(Constants.DISPLAY_DATETIME_FORMAT)</p>
     <p>
-        Total Likes : @Model.BlogPost.LikeQty
+        By @Model.Author.ToString() ( @AuthAvgLike.ToString())
+        on @Model.BlogPost.DateTime.ToString(Constants.DISPLAY_DATETIME_FORMAT)
+    </p>
+    <p> <input type="button" id="btnLike" value="Like" class="btn btn-default" />  @Model.BlogPost.LikeQty</p>
+    <p>
         @Model.BlogPost.Content
     </p>
     <p>
         @Html.ActionLink("Edit", "EditBlogPost", new { id = Model.BlogPost.BlogPostID }) |
         @Html.ActionLink("Back to List", "Index") |
-        @Html.ActionLink("Delete", "EditBlogPost", new { id = Model.BlogPost.BlogPostID }) |
+        @Html.ActionLink("Delete", "Delete", new { id = Model.BlogPost.BlogPostID }) |
     </p>
 </div> }
 else
 {
 <div class="SinglePost">
     <h2>There are no blog posts :-(</h2>
-</div>
-}
+</div>}
+
+
+<!--script type="text/javascript">
+        //var liked = false;
+
+        $(document).ready(function () {
+            alert("hi");
+        }
+
+        /**$("btnLike").click(function (e) {
+            alert("clicked");
+            if (liked == false) {
+                liked = true;
+                alert("Liked");
+
+            } else {
+                liked == false;
+                alert("Dislike");
+            }
+
+
+        });**/
+    </script>-->
+   
