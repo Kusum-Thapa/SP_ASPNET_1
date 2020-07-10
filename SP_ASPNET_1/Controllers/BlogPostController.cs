@@ -12,7 +12,8 @@ namespace SP_ASPNET_1.Controllers
     public class BlogPostController : Controller
     {
         private readonly BlogPostOperations _blogPostOperations = new BlogPostOperations();
-
+      
+       // [OutputCache(CacheProfile = "Cache5Min")]
         [Route("")]
         [HttpGet]
         public ActionResult Index()

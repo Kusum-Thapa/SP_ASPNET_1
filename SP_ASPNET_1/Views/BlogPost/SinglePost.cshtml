@@ -26,6 +26,13 @@
         @Html.ActionLink("Back to List", "Index") |
         @Html.ActionLink("Delete", "Delete", new { id = Model.BlogPost.BlogPostID }) |
     </p>
+    <div class="Post_Comments">
+        <textarea class="Comt_text">  </textarea>
+        <p> <input type="button" id="btnAddCmt" value="Add" class="btn btn-default" />
+           <input type="button" id="btnDelCmt" value="Delete" class="btn btn-default" />
+        </p>
+    </div>
+
 </div> }
 else
 {

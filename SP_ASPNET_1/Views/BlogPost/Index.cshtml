@@ -17,7 +17,7 @@
     <div class="Post-Preview__Content">
         <h2>@post.Title</h2>
         <p>By @post.Author on @post.DateTime.ToString(Constants.DISPLAY_DATETIME_FORMAT)</p>
-        <p> <input type="button" id="btnLike" value="Like" class="btn btn-default" />  @Model.BlogPost.LikeQty</p>
+        <p> <input type="button"  value="Like" class="btn btn-default" />  @post.LikeQty</p>
         <br>
         <p>@post.Content.Substring(0, 200)...</p>
     </div>

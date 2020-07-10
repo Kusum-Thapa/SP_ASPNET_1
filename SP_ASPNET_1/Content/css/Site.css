@@ -373,6 +373,11 @@ ul li .c-btn {
   border-radius: 50%;
   margin-right: 30px; }
 
+.Post_Comments {
+  display: flex;
+  flex-flow: column nowrap;
+  max-width: 610px; }
+
 .Contact__Header {
   display: flex;
   flex-flow: row nowrap;
